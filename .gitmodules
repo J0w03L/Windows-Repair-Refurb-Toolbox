@@ -1,3 +1,6 @@
 [submodule "FTXUI"]
 	path = external/FTXUI
 	url = https://github.com/ArthurSonzogni/FTXUI.git
+[submodule "WinReg"]
+	path = external/WinReg
+	url = https://github.com/GiovanniDicanio/WinReg.git
