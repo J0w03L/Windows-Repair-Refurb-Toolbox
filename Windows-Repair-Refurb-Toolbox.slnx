@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Windows-Repair-Refurb-Toolbox.vcxproj" Id="e6c519a8-2b0e-41c6-9fa1-6312eace3414" />
+</Solution>
