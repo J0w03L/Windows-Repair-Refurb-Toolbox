@@ -1,13 +1,13 @@
 #include "EnvDetect.hpp"
 
 namespace Environment {
-    Environment::Environment() {
+    RuntimeEnvironment::RuntimeEnvironment() {
         // Hopefully this is fine in CRT init..
-        this->type = DetectEnvType();
+        this->state = DetectEnvState();
     }
 
-    EnvironmentType Environment::DetectEnvType() {
-        EnvironmentType ret = EnvironmentType::UNKNOWN;
+    EnvironmentState RuntimeEnvironment::DetectEnvState() {
+        EnvironmentState ret = EnvironmentState::UNKNOWN;
 
         // Check for WinRE/WinPE first..
         RegKey miniNTKey;
@@ -39,7 +39,7 @@ namespace Environment {
             if (ss == INVALID_HANDLE_VALUE) {
                 DbgPrint("Couldn't get a handle for tlhelp32 process check; assuming we're in WinPE!");
                 assert(0);
-                ret = EnvironmentType::WINPE;
+                ret = EnvironmentState::WINPE;
             }
 
             PROCESSENTRY32W entry{};
@@ -49,7 +49,7 @@ namespace Environment {
                 do {
                     if (_wcsicmp(entry.szExeFile, L"recenv.exe") == 0) {
                         DbgPrint("Seems like we're in a WinRE session!");
-                        ret = EnvironmentType::RECOVERY;
+                        ret = EnvironmentState::RECOVERY;
                         break;
                     }
                 } while (Process32NextW(ss, &entry));
@@ -58,9 +58,9 @@ namespace Environment {
             if (ss != INVALID_HANDLE_VALUE)
                 CloseHandle(ss);
 
-            if (ret != EnvironmentType::RECOVERY) {
+            if (ret != EnvironmentState::RECOVERY) {
                 DbgPrint("Seems like we're in a WinPE image!");
-                ret = EnvironmentType::WINPE;
+                ret = EnvironmentState::WINPE;
             }
             break;
         }
@@ -79,7 +79,7 @@ namespace Environment {
             break;
         }
         
-        if (ret != EnvironmentType::UNKNOWN)
+        if (ret != EnvironmentState::UNKNOWN)
             return ret;
 
         // Otherwise, check for safe modes...
@@ -87,17 +87,17 @@ namespace Environment {
         switch (GetSystemMetrics(SM_CLEANBOOT)) {
         case 0:
             DbgPrint("We're booted in normally!");
-            ret = EnvironmentType::NORMAL;
+            ret = EnvironmentState::NORMAL;
             break;
 
         case 1:
             DbgPrint("We're booted into safe mode!");
-            ret = EnvironmentType::SAFE_MODE;
+            ret = EnvironmentState::SAFE_MODE;
             break;
 
         case 2:
             DbgPrint("We're booted into safe mode with networking!");
-            ret = EnvironmentType::SAFE_MODE_NET;
+            ret = EnvironmentState::SAFE_MODE_NET;
             break;
 
         default:

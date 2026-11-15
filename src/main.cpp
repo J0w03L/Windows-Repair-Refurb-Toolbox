@@ -5,15 +5,15 @@
 
 int main()
 {
-    EnvironmentType envType = CurrentEnv.GetType();
+    EnvironmentState envState = CurrentRtEnv.GetState();
     auto document =
         vbox({
             text(
-                envType == EnvironmentType::NORMAL          ? "Running in NORMAL mode!" :
-                envType == EnvironmentType::RECOVERY        ? "Running in RECOVERY mode!" :
-                envType == EnvironmentType::WINPE           ? "Running in WINPE mode!" :
-                envType == EnvironmentType::SAFE_MODE       ? "Running in SAFEMODE mode!" :
-                envType == EnvironmentType::SAFE_MODE_NET   ? "Running in SAFEMODENET mode!" :
+                envState == EnvironmentState::NORMAL          ? "Running in NORMAL mode!" :
+                envState == EnvironmentState::RECOVERY        ? "Running in RECOVERY mode!" :
+                envState == EnvironmentState::WINPE           ? "Running in WINPE mode!" :
+                envState == EnvironmentState::SAFE_MODE       ? "Running in SAFEMODE mode!" :
+                envState == EnvironmentState::SAFE_MODE_NET   ? "Running in SAFEMODENET mode!" :
                 "Unable to detect environment for running mode; YMMV!"
             ) | border,
 

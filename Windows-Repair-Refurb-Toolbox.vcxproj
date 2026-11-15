@@ -23,6 +23,7 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Debug\Debug.hpp" />
     <ClInclude Include="src\EnvUtils\EnvDetect.hpp" />
     <ClInclude Include="src\main.hpp" />
   </ItemGroup>
